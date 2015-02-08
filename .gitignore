@@ -1,0 +1,6 @@
+# Directories
+/list
+/Output
+
+# Backup files 
+*.bak
