@@ -62,20 +62,15 @@ void main (void)
 	printf("\nhello!!\n");
 	
 	send = 0xAA;
+	printf("EEPROM Data Write : %bx\n", send);	
 	HWI2CWrite(0xA0, 0x25, &send, 1);
 	HWI2CRead(0xA0, 0x25, &read, 1);
    // Check that the data was read properly
-   if (read != 0xAA)
+   if (read != send)
    {
       error_flag = 1;
    }	
-	printf("Data Read : %bx\n", read);
-   // Indicate communication is good
-   if (error_flag == 0)
-   {
-      // LED = ON indicates that the test passed
-      LED2 = 1;
-   }	
+	printf("EEPROM Data Read : %bx\n", read);
 
    // Store the outgoing data buffer at EEPROM address 0x50
    HWI2CWrite(0xA0, 0x50, out_buff, sizeof(out_buff));
@@ -93,12 +88,22 @@ void main (void)
       }
    }	
 	
+	FLASH_Write(USER_FLASH_ADDR, out_buff, sizeof(out_buff));
+	printf("Flash Data Write : %s\n", out_buff);
+	FLASH_Read(in_buff, USER_FLASH_ADDR, sizeof(in_buff));
+	printf("Flash Data Read : %s\n", in_buff);	
+	
+	FLASH_Update(USER_FLASH_ADDR, out_buff2, sizeof(out_buff2));
+	FLASH_Read(in_buff2, USER_FLASH_ADDR, sizeof(in_buff2));
+	printf("2nd Flash Data Read : %s\n", in_buff2);
+
+	
    while (1)  // Spin forever
 	{
 		if (led_count_1sec == 0)
 		{
 			LED1 = ~LED1;                       // Change state of LED
-			printf("1sec tick\n");
+			//printf("1sec tick\n");
 			led_count_1sec = 100;
 		}
 	}                             

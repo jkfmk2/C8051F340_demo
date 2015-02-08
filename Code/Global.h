@@ -10,6 +10,8 @@ typedef unsigned char BYTE;
 typedef unsigned int  WORD;
 typedef unsigned long DWORD;
 
+typedef unsigned int FLADDR;
+
 //-----------------------------------------------------------------------------
 // Definition of bits
 //-----------------------------------------------------------------------------

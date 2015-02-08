@@ -207,10 +207,10 @@
       <FileType>1</FileType>
       <tvExp>1</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>13</ColumnNumber>
+      <ColumnNumber>15</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>116</TopLine>
-      <CurrentLine>152</CurrentLine>
+      <TopLine>67</TopLine>
+      <CurrentLine>101</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\Code\main.c</PathWithFileName>
       <FilenameWithoutPath>main.c</FilenameWithoutPath>
@@ -257,8 +257,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1</TopLine>
-      <CurrentLine>9</CurrentLine>
+      <TopLine>300</TopLine>
+      <CurrentLine>389</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\Code\hwi2c.c</PathWithFileName>
       <FilenameWithoutPath>hwi2c.c</FilenameWithoutPath>
@@ -273,8 +273,8 @@
       <Focus>0</Focus>
       <ColumnNumber>3</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>49</TopLine>
-      <CurrentLine>19</CurrentLine>
+      <TopLine>8</TopLine>
+      <CurrentLine>37</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\Code\Flash.c</PathWithFileName>
       <FilenameWithoutPath>Flash.c</FilenameWithoutPath>

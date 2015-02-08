@@ -12,7 +12,8 @@
 
 
 #define  EEPROM_ADDR    0xA0           // Device address for slave target
-
+#define	USER_FLASH_ADDR	0x0F000
+#define	USER_FLASH_ADDR_2	(USER_FLASH_ADDR + 512)
 
 //-----------------------------------------------------------------------------
 // 16-bit SFR Definitions for 'F34x
@@ -29,9 +30,11 @@ sbit LED2 = P2^3;                      // LED='1' means ON
 
 char in_buff[8] = {0};              // Incoming data buffer
 char out_buff[8] = "ABCDEFG";       // Outgoing data buffer
+char in_buff2[14] = {0};
+char out_buff2[14] = "Update Flash!";
 
-unsigned char send;            // Temporary variable
-unsigned char read;            // Temporary variable
+char send;            // Temporary variable
+char read;            // Temporary variable
 bit error_flag = 0;                 // Flag for checking EEPROM contents
 unsigned char i;                    // Temporary counter variable
 
