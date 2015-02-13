@@ -1,29 +1,12 @@
 //-----------------------------------------------------------------------------
-// F34x_Blinky.c
+// main.c
 //-----------------------------------------------------------------------------
-// Copyright 2007 Silicon Laboratories, Inc.
-// http://www.silabs.com
 //
 // Program Description:
 //
-// This program flashes the P2.2 green LED on the C8051F34x target board
-// five times a second using the interrupt handler for Timer2.
 //
-//
-// How To Test:
-//
-// 1) Download code to a 'F34x target board
-// 2) Run the code and if the P2.2 LED blinks, the code works
-//
-//
-// FID:            34X000001
-// Target:         C8051F34x
+// Target:         C8051F340
 // Tool chain:     Keil C51 7.50 / Keil EVAL C51
-// Command Line:   None
-//
-// Release 1.1
-//    -27 SEP 2006 (GP)
-//    -Fixed #define for SYSCLK from 24.5/8 Mhz to 12/8 Mhz.
 //
 // Release 1.0
 //    -Initial Revision (GP)

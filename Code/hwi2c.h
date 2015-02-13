@@ -1,16 +1,30 @@
 //-----------------------------------------------------------------------------
 // hwi2c.h
-// 1. Use timer0 overflow as I2C clock source
-// 2. Use timer3 as timeout counter
 //-----------------------------------------------------------------------------
 
+// (1) Declare SMB I/O pins
 sbit SDA = P0^0;                       // SMBus on P0.0
 sbit SCL = P0^1;                       // and P0.1
-#define SMB_FREQUENCY	50000
 
+#define CLK_T0       1
+#define CLK_UART     2
+
+// (2) Set SMB bus clock source
+#define SMB_CLK_SRC  1     // Select SMB bus clock source
+                           // CLK_UART : Share with UART buadrate timer1
+                           // CLK_T0 : Use timer0 overflow as I2C clock source
+                           //          and use timer3 as timeout counter   
+
+// (3) Set SMB bus clock frequency
+#define SMB_FREQUENCY   50000    // only valid when SMB_CLK_SRC = CLK_T0
+
+#if(SMB_CLK_SRC == CLK_UART)
+
+#else //#elif(SMB_CLK_SRC == CLK_T0) 
 #define TIMER0_RELOAD			-(SYSCLK / SMB_FREQUENCY / 3)
 #define TIMER0_RELOAD_HIGH		((TIMER0_RELOAD & 0xFF00) >> 8)
 #define TIMER0_RELOAD_LOW		(TIMER0_RELOAD & 0x00FF)
+#endif
 
 // Status vector - top 4 bits only
 #define  SMB_MTSTA      0xE0           // (MT) start transmitted
@@ -76,7 +90,12 @@ bit SMB_ACKPOLL;                       // When set, this flag causes the ISR
 void HWI2CWrite(unsigned char device, unsigned char addr, unsigned char *pByteArray, unsigned char length);
 void HWI2CRead(unsigned char device, unsigned char addr, unsigned char *pByteArray, unsigned char length);
 void SMBus_Init (void);
+
+#if(SMB_CLK_SRC == CLK_UART)
+
+#else //#elif(SMB_CLK_SRC == CLK_T0) 
 void Timer0_Init (void);
+#endif
 void Timer3_Init (void);
 
 #else
@@ -100,7 +119,12 @@ extern bit SMB_ACKPOLL;
 extern void HWI2CWrite(unsigned char device, unsigned char addr, unsigned char *pByteArray, unsigned char length);
 extern void HWI2CRead(unsigned char device, unsigned char addr, unsigned char *pByteArray, unsigned char length);
 extern void SMBus_Init (void);
+
+#if(SMB_CLK_SRC == CLK_UART)
+
+#else //#elif(SMB_CLK_SRC == CLK_T0) 
 extern void Timer0_Init (void);
+#endif 
 extern void Timer3_Init (void);
 
 #endif

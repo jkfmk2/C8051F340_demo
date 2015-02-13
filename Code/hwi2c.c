@@ -126,7 +126,11 @@ void HWI2CRead(unsigned char device, unsigned char addr, unsigned char *pByteArr
 //
 void SMBus_Init (void)
 {
+#if(SMB_CLK_SRC == CLK_UART)
+   SMB0CF = 0x5D;                      // Use Timer1 overflows as SMBus clock
+#else //#elif(SMB_CLK_SRC == CLK_T0)
    SMB0CF = 0x5C;                      // Use Timer0 overflows as SMBus clock
+#endif   
                                        // source;
                                        // Disable slave mode;
                                        // Enable setup & hold time extensions;
@@ -137,6 +141,9 @@ void SMBus_Init (void)
 	EIE1 |= 0x01;                       // Enable the SMBus interrupt
 }
 
+#if(SMB_CLK_SRC == CLK_UART)
+
+#else //#elif(SMB_CLK_SRC == CLK_T0)
 //-----------------------------------------------------------------------------
 // Timer0_Init
 //-----------------------------------------------------------------------------
@@ -151,7 +158,6 @@ void SMBus_Init (void)
 // - The resulting SCL clock rate will be ~1/3 the Timer0 overflow rate
 // - Timer0 enabled
 //
-#if 1
 void Timer0_Init (void)
 {
 // Make sure the Timer can produce the appropriate frequency in 16-bit mode
@@ -169,33 +175,7 @@ void Timer0_Init (void)
 	ET0 = 1;
 	TR0 = 1;
 }
-
-#else
-void Timer0_Init (void)
-{
-// Make sure the Timer can produce the appropriate frequency in 8-bit mode
-// Supported SMBus Frequencies range from 10kHz to 100kHz.  The CKCON register
-// settings may need to change for frequencies outside this range.
-#if ((SYSCLK/SMB_FREQUENCY/3) < 255)
-   #define SCALE 1
-      CKCON |= 0x08;                   // Timer0 clock source = SYSCLK
-#elif ((SYSCLK/SMB_FREQUENCY/4/3) < 255)
-   #define SCALE 4
-      CKCON |= 0x01;
-      CKCON &= ~0x0A;                  // Timer0 clock source = SYSCLK / 4
 #endif
-
-   TMOD = 0x20;                        // Timer0 in 8-bit auto-reload mode
-
-   // Timer1 configured to overflow at 1/3 the rate defined by SMB_FREQUENCY
-   TH0 = -(SYSCLK/SMB_FREQUENCY/SCALE/3);
-
-   TL0 = TH0;                          // Init Timer0
-
-   TR0 = 1;                            // Timer0 enabled
-}
-#endif
-
 
 //-----------------------------------------------------------------------------
 // Timer3_Init()
@@ -226,6 +206,9 @@ void Timer3_Init (void)
    TMR3CN |= 0x04;                     // Start Timer3
 }
 
+#if(SMB_CLK_SRC == CLK_UART)
+
+#else //#elif(SMB_CLK_SRC == CLK_T0)
 //-----------------------------------------------------------------------------
 // Timer0_ISR
 //-----------------------------------------------------------------------------
@@ -238,6 +221,7 @@ void Timer0_ISR (void) interrupt INTERRUPT_TIMER0
    TH0 = TIMER0_RELOAD_HIGH;           // Reinit Timer0 High register
    TL0 = TIMER0_RELOAD_LOW;            // Reinit Timer0 Low register
 }
+#endif
 
 //-----------------------------------------------------------------------------
 // SMBus Interrupt Service Routine (ISR)
@@ -392,8 +376,6 @@ void Timer3_ISR (void) interrupt INTERRUPT_TIMER3
    TMR3CN &= ~0x80;                    // Clear Timer3 interrupt-pending flag
    SMB_BUSY = 0;                       // Free bus
 }
-
 //-----------------------------------------------------------------------------
 // End Of File
 //-----------------------------------------------------------------------------
-
